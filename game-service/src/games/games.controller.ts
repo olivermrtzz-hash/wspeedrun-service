@@ -23,7 +23,7 @@ export class GamesController {
 
     @UseGuards(RolesGuard)
     @Post('/admin')
-    createGame(@Body() game){
+    createGame(@Body() game: gameCreateDTO){
         return this._gameService.createGame(game);
     }
 

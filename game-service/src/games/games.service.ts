@@ -33,6 +33,10 @@ export class GamesService {
 
     createGame(game){
         this.gamesList.push(game)
+
+        return {
+            message: 'The game has been registered successfully'
+        }
     }
 
     updateGame(id: string, updatedGame: Partial<gameCreateDTO>){
@@ -51,6 +55,11 @@ export class GamesService {
         if (updatedGame.description){
             game.description = updatedGame.description;
         }
+
+        return {
+            message: 'The selected game has been updated',
+            updatedGame: game
+        }
     }
 
     deleteGame(id: string){
@@ -62,7 +71,7 @@ export class GamesService {
             }
         }
 
-        this.gamesList = this.gamesList.filter(t => t.game_id === id);
+        this.gamesList = this.gamesList.filter(t => t.game_id !== id);
 
         return {
             message: 'Game has been deleted successfully'
