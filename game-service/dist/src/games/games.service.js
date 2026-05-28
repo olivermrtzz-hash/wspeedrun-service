@@ -33,6 +33,35 @@ let GamesService = class GamesService {
         const game = this.gamesList.find(t => t.game_id === id);
         return game ?? null;
     }
+    createGame(game) {
+        this.gamesList.push(game);
+    }
+    updateGame(id, updatedGame) {
+        const game = this.gamesList.find(t => t.game_id === id);
+        if (!game) {
+            return {
+                message: 'Game does not exist'
+            };
+        }
+        if (updatedGame.game_name) {
+            game.game_name = updatedGame.game_name;
+        }
+        if (updatedGame.description) {
+            game.description = updatedGame.description;
+        }
+    }
+    deleteGame(id) {
+        const game = this.gamesList.find(t => t.game_id === id);
+        if (!game) {
+            return {
+                message: 'Game does not exist'
+            };
+        }
+        this.gamesList = this.gamesList.filter(t => t.game_id === id);
+        return {
+            message: 'Game has been deleted successfully'
+        };
+    }
 };
 exports.GamesService = GamesService;
 exports.GamesService = GamesService = __decorate([

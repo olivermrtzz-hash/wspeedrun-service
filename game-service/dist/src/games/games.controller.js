@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GamesController = void 0;
 const common_1 = require("@nestjs/common");
 const games_service_1 = require("./games.service");
+const common_2 = require("@nestjs/common");
+const roles_guard_1 = require("../auth/roles/roles.guard");
 let GamesController = class GamesController {
     _gameService;
     constructor(gameService) {
@@ -25,6 +27,15 @@ let GamesController = class GamesController {
     }
     getGameById(game_id) {
         return this._gameService.getGameById(game_id);
+    }
+    createGame(game) {
+        return this._gameService.createGame(game);
+    }
+    updateGame(game_id, updatedGame) {
+        return this._gameService.updateGame(game_id, updatedGame);
+    }
+    deleteGame(game_id) {
+        return this._gameService.deleteGame(game_id);
     }
 };
 exports.GamesController = GamesController;
@@ -41,6 +52,31 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "getGameById", null);
+__decorate([
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
+    (0, common_1.Post)('/admin'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], GamesController.prototype, "createGame", null);
+__decorate([
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
+    (0, common_1.Patch)('/admin/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], GamesController.prototype, "updateGame", null);
+__decorate([
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
+    (0, common_1.Delete)('/admin/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], GamesController.prototype, "deleteGame", null);
 exports.GamesController = GamesController = __decorate([
     (0, common_1.Controller)('games'),
     __metadata("design:paramtypes", [games_service_1.GamesService])
