@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GamesController = void 0;
 const common_1 = require("@nestjs/common");
 const games_service_1 = require("./games.service");
+const gameCreateDTO_1 = require("./dtos/gameCreateDTO");
 const common_2 = require("@nestjs/common");
 const roles_guard_1 = require("../auth/roles/roles.guard");
 let GamesController = class GamesController {
@@ -57,7 +58,7 @@ __decorate([
     (0, common_1.Post)('/admin'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [gameCreateDTO_1.gameCreateDTO]),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "createGame", null);
 __decorate([

@@ -5,10 +5,16 @@ export declare class GamesController {
     constructor(gameService: GamesService);
     getGames(): gameCreateDTO[];
     getGameById(game_id: string): gameCreateDTO | null;
-    createGame(game: any): void;
+    createGame(game: gameCreateDTO): {
+        message: string;
+    };
     updateGame(game_id: string, updatedGame: Partial<gameCreateDTO>): {
         message: string;
-    } | undefined;
+        updatedGame?: undefined;
+    } | {
+        message: string;
+        updatedGame: gameCreateDTO;
+    };
     deleteGame(game_id: string): {
         message: string;
     };

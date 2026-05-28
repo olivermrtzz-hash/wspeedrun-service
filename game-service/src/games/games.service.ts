@@ -48,11 +48,11 @@ export class GamesService {
             };
         }
 
-        if (updatedGame.game_name){
+        if (updatedGame?.game_name){
             game.game_name = updatedGame.game_name;
         }
 
-        if (updatedGame.description){
+        if (updatedGame?.description){
             game.description = updatedGame.description;
         }
 

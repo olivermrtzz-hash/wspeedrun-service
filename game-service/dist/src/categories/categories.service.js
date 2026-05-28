@@ -9,6 +9,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoriesService = void 0;
 const common_1 = require("@nestjs/common");
 let CategoriesService = class CategoriesService {
+    categoryList = [
+        {
+            run_category_id: "1",
+            game_id: "1",
+            run_category_name: "Any%",
+        },
+    ];
+    getCategoriesById(id) {
+        const category = this.categoryList.find(t => t.run_category_id === id);
+        return category ?? null;
+    }
+    createCategory(category) {
+        this.categoryList.push(category);
+        return {
+            message: 'You have created a new category'
+        };
+    }
+    updateCategoryDetail(id, updatedDetail) {
+        const category = this.categoryList.find(t => t.run_category_id === id);
+        if (!category) {
+            return {
+                message: 'The searched category does not exist'
+            };
+        }
+        if (updatedDetail?.game_id) {
+            category.game_id = updatedDetail.game_id;
+        }
+        if (updatedDetail?.run_category_name) {
+            category.run_category_name = updatedDetail.run_category_name;
+        }
+        return {
+            updatedDetail: category,
+        };
+    }
+    deleteCategory(id) {
+        const category = this.categoryList.find(t => t.run_category_id === id);
+        if (!category) {
+            return {
+                message: 'The searched category does not exist'
+            };
+        }
+        this.categoryList = this.categoryList.filter(t => t.run_category_id !== id);
+        return {
+            message: 'Category has been deleted successfully'
+        };
+    }
 };
 exports.CategoriesService = CategoriesService;
 exports.CategoriesService = CategoriesService = __decorate([

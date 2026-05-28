@@ -33,16 +33,16 @@ export class CategoriesService {
             };
         }
 
-        if (updatedDetail.game_id){
+        if (updatedDetail?.game_id){
             category.game_id = updatedDetail.game_id;
         }
 
-        if (updatedDetail.run_category_name){
+        if (updatedDetail?.run_category_name){
             category.run_category_name = updatedDetail.run_category_name;
         }
 
         return {
-            updatedCategory: category,
+            updatedDetail: category,
         }
     }
 
