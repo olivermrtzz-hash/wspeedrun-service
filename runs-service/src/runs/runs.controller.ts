@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { RunsService } from './runs.service';
+import { AdminGuard } from 'src/auth/admin/admin.guard';
 
-@Controller('runs')
+@UseGuards(AdminGuard)
+@Controller('admin/runs')
 export class RunsController {
     private _runsService: RunsService;
 
@@ -10,10 +12,7 @@ export class RunsController {
     }
 
     // Run
-
-    // Comment
     
-
     // Run Management
     @Get(':status')
     async getRunsByStatus(@Param('status') status: string) {

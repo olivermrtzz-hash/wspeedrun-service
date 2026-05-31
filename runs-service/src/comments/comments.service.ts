@@ -12,7 +12,15 @@ export class CommentsService {
         this._prisma = prisma
     }
 
-    createNewComment(body: commentCreateDTO): Promise<comments> {
+    async createNewComment(body: commentCreateDTO): Promise<comments> {
+
+        const runId = await body.run_id
+        const userId = await body.user_id
+
+        if(!runId || !userId) {
+            throw new Error('run ID or user ID cannot be empty')
+        }
+
         return this._prisma.comments.create({
             data: body as Prisma.commentsCreateInput
         })

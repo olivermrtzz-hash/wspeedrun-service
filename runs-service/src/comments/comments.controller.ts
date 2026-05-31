@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { ApiBody } from '@nestjs/swagger';
 import { commentCreateDTO } from './dtos/commentCreateDTO/commentCreateDTO';
+import { UserGuard } from 'src/auth/user/user.guard';
 
+@UseGuards(UserGuard)
 @Controller('comments')
 export class CommentsController {
 

@@ -16,7 +16,8 @@ exports.GamesModule = GamesModule;
 exports.GamesModule = GamesModule = __decorate([
     (0, common_1.Module)({
         controllers: [games_controller_1.GamesController],
-        providers: [games_service_1.GamesService]
+        providers: [games_service_1.GamesService],
+        exports: [games_service_1.GamesService],
     })
 ], GamesModule);
 //# sourceMappingURL=games.module.js.map
