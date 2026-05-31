@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const categories_service_1 = require("./categories.service");
 const roles_guard_1 = require("../auth/roles/roles.guard");
 const categoryCreateDTO_1 = require("./dtos/categoryCreateDTO");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let CategoriesController = class CategoriesController {
     _categoriesService;
     constructor(categoriesService) {
@@ -37,23 +38,23 @@ let CategoriesController = class CategoriesController {
 };
 exports.CategoriesController = CategoriesController;
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('categories/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "getCategoryById", null);
 __decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Post)('/admin'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('admin/categories'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [categoryCreateDTO_1.categoryCreateDTO]),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "createCategory", null);
 __decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Patch)('/admin/:id'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Patch)('admin/categories/:id/update'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -61,15 +62,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "updateCategoryDetail", null);
 __decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Delete)('/admin/:id'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Delete)('admin/categories/:id/delete'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "deleteCategory", null);
 exports.CategoriesController = CategoriesController = __decorate([
-    (0, common_1.Controller)('categories'),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [categories_service_1.CategoriesService])
 ], CategoriesController);
 //# sourceMappingURL=categories.controller.js.map

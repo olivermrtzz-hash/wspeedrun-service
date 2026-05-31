@@ -18,6 +18,7 @@ const games_service_1 = require("./games.service");
 const gameCreateDTO_1 = require("./dtos/gameCreateDTO");
 const common_2 = require("@nestjs/common");
 const roles_guard_1 = require("../auth/roles/roles.guard");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let GamesController = class GamesController {
     _gameService;
     constructor(gameService) {
@@ -41,29 +42,29 @@ let GamesController = class GamesController {
 };
 exports.GamesController = GamesController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('games'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "getGames", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('games/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "getGameById", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Post)('/admin'),
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('admin/games'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [gameCreateDTO_1.gameCreateDTO]),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "createGame", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Patch)('/admin/:id'),
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Patch)('admin/games/:id/update'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -71,15 +72,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "updateGame", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Delete)('/admin/:id'),
+    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Delete)('admin/games/:id/delete'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "deleteGame", null);
 exports.GamesController = GamesController = __decorate([
-    (0, common_1.Controller)('games'),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [games_service_1.GamesService])
 ], GamesController);
 //# sourceMappingURL=games.controller.js.map

@@ -6,20 +6,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RolesGuard = void 0;
+exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-let RolesGuard = class RolesGuard {
-    canActivate(context) {
-        const request = context.switchToHttp().getRequest();
-        const user = request.user;
-        if (!user) {
-            return false;
-        }
-        return user.role === 'ADMIN';
-    }
+const jwt_1 = require("@nestjs/jwt");
+const passport_1 = require("@nestjs/passport");
+const jwt_strategy_1 = require("./jwt.strategy");
+let AuthModule = class AuthModule {
 };
-exports.RolesGuard = RolesGuard;
-exports.RolesGuard = RolesGuard = __decorate([
-    (0, common_1.Injectable)()
-], RolesGuard);
-//# sourceMappingURL=roles.guard.js.map
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
+                secret: 'secretKey',
+                signOptions: { expiresIn: '1d' },
+            }),
+        ],
+        providers: [jwt_strategy_1.JwtStrategy],
+        exports: [jwt_strategy_1.JwtStrategy]
+    })
+], AuthModule);
+//# sourceMappingURL=auth.module.js.map

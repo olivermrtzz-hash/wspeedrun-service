@@ -5,73 +5,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GamesService = void 0;
 const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../../prisma/prisma.service");
 let GamesService = class GamesService {
-    gamesList = [
-        {
-            game_id: '1',
-            game_name: 'Star Wars Jedi Knight: Jedi Academy',
-            description: 'The best combat mechanic in Star Wars game.'
-        },
-        {
-            game_id: '2',
-            game_name: 'Need For Speed: Most Wanted (2005)',
-            description: 'Street racing.'
-        },
-        {
-            game_id: '3',
-            game_name: 'Tokyo Xtreme Racer 2025',
-            description: 'Street racing but in Japan'
-        }
-    ];
+    _prisma;
+    constructor(_prisma) {
+        this._prisma = _prisma;
+    }
     getGames() {
-        return this.gamesList;
+        return this._prisma.games.findMany();
     }
     getGameById(id) {
-        const game = this.gamesList.find(t => t.game_id === id);
-        return game ?? null;
+        return this._prisma.games.findUnique({
+            where: { game_id: id },
+            include: {
+                run_categories: true,
+            }
+        });
     }
     createGame(game) {
-        this.gamesList.push(game);
-        return {
-            message: 'The game has been registered successfully'
-        };
+        if (!game.game_name || !game.description) {
+            throw new Error('Game name and description must be filled');
+        }
+        return this._prisma.games.create({
+            data: {
+                game_name: game.game_name,
+                description: game.description,
+            }
+        });
     }
     updateGame(id, updatedGame) {
-        const game = this.gamesList.find(t => t.game_id === id);
-        if (!game) {
-            return {
-                message: 'Game does not exist'
-            };
-        }
-        if (updatedGame?.game_name) {
-            game.game_name = updatedGame.game_name;
-        }
-        if (updatedGame?.description) {
-            game.description = updatedGame.description;
-        }
-        return {
-            message: 'The selected game has been updated',
-            updatedGame: game
-        };
+        return this._prisma.games.update({
+            where: { game_id: id },
+            data: {
+                game_name: updatedGame.game_name,
+                description: updatedGame.description,
+            }
+        });
     }
     deleteGame(id) {
-        const game = this.gamesList.find(t => t.game_id === id);
-        if (!game) {
-            return {
-                message: 'Game does not exist'
-            };
-        }
-        this.gamesList = this.gamesList.filter(t => t.game_id !== id);
-        return {
-            message: 'Game has been deleted successfully'
-        };
+        return this._prisma.games.delete({
+            where: { game_id: id }
+        });
     }
 };
 exports.GamesService = GamesService;
 exports.GamesService = GamesService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], GamesService);
 //# sourceMappingURL=games.service.js.map

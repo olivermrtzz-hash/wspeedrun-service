@@ -10,10 +10,11 @@ async function bootstrap() {
         .setDescription('This is the game service api')
         .setVersion('1.0')
         .addTag('game service')
+        .addBearerAuth()
         .build();
     const documentFactory = () => swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, documentFactory);
-    await app.listen(process.env.PORT ?? 3002);
+    await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

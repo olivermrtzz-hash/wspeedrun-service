@@ -6,20 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RolesGuard = void 0;
+exports.PrismaService = void 0;
 const common_1 = require("@nestjs/common");
-let RolesGuard = class RolesGuard {
-    canActivate(context) {
-        const request = context.switchToHttp().getRequest();
-        const user = request.user;
-        if (!user) {
-            return false;
-        }
-        return user.role === 'ADMIN';
+const client_1 = require("@prisma/client");
+let PrismaService = class PrismaService extends client_1.PrismaClient {
+    async onModuleInit() {
+        await this.$connect();
     }
 };
-exports.RolesGuard = RolesGuard;
-exports.RolesGuard = RolesGuard = __decorate([
+exports.PrismaService = PrismaService;
+exports.PrismaService = PrismaService = __decorate([
     (0, common_1.Injectable)()
-], RolesGuard);
-//# sourceMappingURL=roles.guard.js.map
+], PrismaService);
+//# sourceMappingURL=prisma.service.js.map

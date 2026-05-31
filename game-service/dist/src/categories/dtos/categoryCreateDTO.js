@@ -12,15 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.categoryCreateDTO = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class categoryCreateDTO {
-    run_category_id;
     game_id;
     run_category_name;
 }
 exports.categoryCreateDTO = categoryCreateDTO;
-__decorate([
-    (0, swagger_1.ApiProperty)(),
-    __metadata("design:type", String)
-], categoryCreateDTO.prototype, "run_category_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
