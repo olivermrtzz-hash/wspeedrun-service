@@ -3,6 +3,7 @@ import { RunsController } from './runs.controller';
 import { RunsService } from './runs.service';
 
 @Module({
+  imports: [GamesService],
   controllers: [RunsController],
   providers: [RunsService]
 })

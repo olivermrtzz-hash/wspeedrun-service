@@ -5,10 +5,16 @@ import { RunsService } from './runs.service';
 export class RunsController {
     private _runsService: RunsService;
 
-    constructor(private runsService: RunsService) {
+    constructor(runsService: RunsService) {
         this._runsService = runsService
     }
 
+    // Run
+
+    // Comment
+    
+
+    // Run Management
     @Get(':status')
     async getRunsByStatus(@Param('status') status: string) {
         return await this._runsService.getRunsByStatus(status);

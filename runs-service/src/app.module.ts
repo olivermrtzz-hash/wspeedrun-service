@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { RunsModule } from './runs/runs.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { PrismaModule } from './prisma/prisma.module';
       isGlobal: true
     }),
     RunsModule,
-    PrismaModule
+    PrismaModule,
+    CommentsModule
   ],
   controllers: [AppController],
   providers: [AppService],
