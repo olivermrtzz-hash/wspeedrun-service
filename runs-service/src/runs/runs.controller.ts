@@ -3,7 +3,7 @@ import { RunsService } from './runs.service';
 import { AdminGuard } from 'src/auth/admin/admin.guard';
 
 @UseGuards(AdminGuard)
-@Controller('admin/runs')
+@Controller('admin')
 export class RunsController {
     private _runsService: RunsService;
 
@@ -14,17 +14,17 @@ export class RunsController {
     // Run
     
     // Run Management
-    @Get(':status')
+    @Get('runs/:status')
     async getRunsByStatus(@Param('status') status: string) {
         return await this._runsService.getRunsByStatus(status);
     }
 
-    @Post(':id/accept')
+    @Post('runs/:id/accept')
     async acceptRunEntry(@Param('id') id: string) {
         return await this._runsService.updateRunStatus(id, 'ACCEPTED');
     }
 
-    @Post(':id/reject')
+    @Post('runs/:id/reject')
     async rejectRunEntry(@Param('id') id: string) {
         return await this._runsService.updateRunStatus(id, 'REJECTED');
     }
