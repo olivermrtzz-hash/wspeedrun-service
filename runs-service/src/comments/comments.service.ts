@@ -12,7 +12,7 @@ export class CommentsService {
         this._prisma = prisma
     }
 
-    async createNewComment(body: commentCreateDTO): Promise<comments> {
+    async createNewComment(body: commentCreateDTO, authenticatedUser: any): Promise<{ message: string; data: comments }> {
 
         const runId = await body.run_id
         const userId = await body.user_id
@@ -21,12 +21,32 @@ export class CommentsService {
             throw new Error('run ID or user ID cannot be empty')
         }
 
-        return this._prisma.comments.create({
+        if(userId !== authenticatedUser.id) {
+            throw new Error('User ID does not match authenticated user')
+        }
+
+        const createdComment = await this._prisma.comments.create({
             data: body as Prisma.commentsCreateInput
         })
+
+        return {
+            message: 'Comment created successfully',
+            data: createdComment
+        }
     }
 
-    deleteComment(id: string): Promise<comments> {
+    deleteComment(id: string, authenticatedUser: any): Promise<comments> {
+
+        const comment = this._prisma.comments.findUnique({
+            where: {
+                comment_id: id
+            }
+        })
+
+        if(comment != authenticatedUser.comment_id) {
+            throw new Error('Not the correct comment owner')
+        }
+
         return this._prisma.comments.delete({
             where: {
                 comment_id: id
