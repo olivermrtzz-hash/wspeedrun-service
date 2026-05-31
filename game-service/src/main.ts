@@ -9,6 +9,7 @@ async function bootstrap() {
   .setDescription('This is the game service api')
   .setVersion('1.0')
   .addTag('game service')
+  .addBearerAuth()
   .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

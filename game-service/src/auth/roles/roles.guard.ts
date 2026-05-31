@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 export class RolesGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
+    const user = request.user;
 
-    request.user = {
-      role: 'admin'
-    };
+    if (!user){
+      return false;
+    }
 
-    return request.user.role === 'admin';
+    return user.role === 'ADMIN';
   }
 }

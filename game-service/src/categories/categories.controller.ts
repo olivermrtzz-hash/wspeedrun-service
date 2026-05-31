@@ -2,8 +2,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@n
 import { CategoriesService } from './categories.service';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { categoryCreateDTO } from './dtos/categoryCreateDTO';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('categories')
+@Controller()
 export class CategoriesController {
     private _categoriesService: CategoriesService;
 
@@ -11,25 +12,25 @@ export class CategoriesController {
         this._categoriesService = categoriesService;
     }
 
-    @Get(':id')
+    @Get('categories/:id')
     getCategoryById(@Param('id') run_category_id: string){
         return this._categoriesService.getCategoriesById(run_category_id);
     }
 
-    @UseGuards(RolesGuard)
-    @Post('/admin')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Post('admin/categories')
     createCategory(@Body() category: categoryCreateDTO){
         return this._categoriesService.createCategory(category);
     }
 
-    @UseGuards(RolesGuard)
-    @Patch('/admin/:id')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Patch('admin/categories/:id/update')
     updateCategoryDetail(@Param('id') id: string, @Body() updatedDetail: Partial<categoryCreateDTO>){
         return this._categoriesService.updateCategoryDetail(id, updatedDetail);
     }
 
-    @UseGuards(RolesGuard)
-    @Delete('/admin/:id')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Delete('admin/categories/:id/delete')
     deleteCategory(@Param('id') id: string){
         return this._categoriesService.deleteCategory(id);
     }

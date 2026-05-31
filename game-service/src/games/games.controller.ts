@@ -3,38 +3,39 @@ import { GamesService } from './games.service';
 import { gameCreateDTO } from './dtos/gameCreateDTO';
 import { UseGuards } from '@nestjs/common';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('games')
+@Controller()
 export class GamesController {
     private _gameService: GamesService;
     constructor(gameService: GamesService){
         this._gameService = gameService;
     }
 
-    @Get()
+    @Get('games')
     getGames(){
        return this._gameService.getGames(); 
     }
 
-    @Get(':id')
+    @Get('games/:id')
     getGameById(@Param('id') game_id: string){
         return this._gameService.getGameById(game_id);
     }
 
-    @UseGuards(RolesGuard)
-    @Post('/admin')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Post('admin/games')
     createGame(@Body() game: gameCreateDTO){
         return this._gameService.createGame(game);
     }
 
-    @UseGuards(RolesGuard)
-    @Patch('/admin/:id')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Patch('admin/games/:id/update')
     updateGame(@Param('id') game_id: string, @Body() updatedGame: Partial<gameCreateDTO>){
         return this._gameService.updateGame(game_id, updatedGame)
     }
 
-    @UseGuards(RolesGuard)
-    @Delete('/admin/:id')
+    @UseGuards(RolesGuard, JwtAuthGuard)
+    @Delete('admin/games/:id/delete')
     deleteGame(@Param('id') game_id: string){
         return this._gameService.deleteGame(game_id)
     }
