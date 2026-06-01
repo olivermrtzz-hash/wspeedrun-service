@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { gameCreateDTO } from './dtos/gameCreateDTO';
 import { PrismaService } from 'prisma/prisma.service';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Injectable()
 export class GamesService {
@@ -47,5 +48,16 @@ export class GamesService {
         return this._prisma.games.delete({
             where: {game_id: id}
         })
+    }
+
+    @MessagePattern('validate_category')
+    async validateCategoryId(id: string) {
+        const categoryId = await this._prisma.run_categories.findUnique({
+            where: {
+                run_category_id: id,
+            }
+        });
+
+        return !!categoryId;
     }
 }

@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Prisma, runs } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { runCreateDTO } from './dtos/runCreateDTO';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class RunsService {
@@ -10,12 +12,17 @@ export class RunsService {
     private _prisma: PrismaService;
     // private _gameService: 
 
-    constructor(prisma: PrismaService) {
+    constructor(
+        prisma: PrismaService,
+        @Inject('GAME_SERVICE')
+        private readonly gameService: ClientProxy
+    ) {
         this._prisma = prisma
     }
 
     // Run logic
-    // getRunsByCategory(id: string): Promise<runs[]> {
+    // async getRunsByCategory(id: string): Promise<runs[]> {
+
     //     return this._prisma.runs.findMany({
     //         where: {
     //             run_category_id: id
@@ -33,20 +40,23 @@ export class RunsService {
         })
     }
 
-    // async createNewRunEntry(body: runCreateDTO): Promise<runs>{
+    async createNewRunEntry(body: runCreateDTO): Promise<runs>{
 
-        // const doesExistCategory = 
+        const doesExistCategory = await firstValueFrom(
+            this.gameService.send(
+                'validate_categoryId',
+                body.run_category_id
+            )
+        );
 
-        // const id = await this._prisma.runs.findUnique({
-        //     where: {
-        //         run_category_id: body.run_category_id
-        //     }
-        // });
+        if(!doesExistCategory) {
+            throw new Error('run category Id does not exist')
+        }
 
-        // return this._prisma.runs.create({
-        //     data: body as Prisma.runsCreateInput,
-        // })
-    // }
+        return this._prisma.runs.create({
+            data: body as Prisma.runsCreateInput,
+        })
+    }
 
     // Run management logic
     getRunsByStatus(status: string): Promise<runs[]> {
