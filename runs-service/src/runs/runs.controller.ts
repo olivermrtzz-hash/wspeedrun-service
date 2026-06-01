@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { RunsService } from './runs.service';
 import { AdminGuard } from 'src/auth/admin/admin.guard';
+import { runCreateDTO } from './dtos/runCreateDTO';
 
 @UseGuards(AdminGuard)
 @Controller('admin')
@@ -12,7 +13,10 @@ export class RunsController {
     }
 
     // Run
-    
+    @Post('/runs')
+    async createNewRunEntry(@Body() body: runCreateDTO) {
+        return await this._runsService.createNewRunEntry(body)
+    }
     // Run Management
     @Get('runs/:status')
     async getRunsByStatus(@Param('status') status: string) {

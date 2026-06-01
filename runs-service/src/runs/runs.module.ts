@@ -13,7 +13,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           host: 'localhost',
           port: 3001
         }
-      }
+      },
     ])
   ],
   controllers: [RunsController],

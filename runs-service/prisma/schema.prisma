@@ -12,13 +12,13 @@ datasource db {
 }
 
 model runs {
-  run_id String @id @db.VarChar(36)
+  run_id String @id @db.VarChar(36) @default(uuid())
   run_category_id String @db.VarChar(36)
   user_id String @db.VarChar(35)
   vod_url String @db.VarChar(255)
   run_duration BigInt
-  submitted_at DateTime
-  verified_at DateTime
+  submitted_at DateTime @default(now())
+  verified_at DateTime?
   status String @db.VarChar(25)
 }
 

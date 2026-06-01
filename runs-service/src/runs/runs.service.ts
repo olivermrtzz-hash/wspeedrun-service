@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, runs } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { runCreateDTO } from './dtos/runCreateDTO';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, NotFoundError } from 'rxjs';
 
 @Injectable()
 export class RunsService {
@@ -21,26 +21,58 @@ export class RunsService {
     }
 
     // Run logic
-    // async getRunsByCategory(id: string): Promise<runs[]> {
+    async getRunsByCategory(id: string) {
 
-    //     return this._prisma.runs.findMany({
-    //         where: {
-    //             run_category_id: id
-    //         }
-    //     })
-    // }
+        const doesExistCategory = await firstValueFrom(
+            this.gameService.send(
+                'validate_categoryId',
+                id
+            )
+        );
 
-    // Run logic
-    getRunsByUser(id: string): Promise<runs[]> {
+        if(!doesExistCategory) {
+            throw new NotFoundException('Category not found');
+        }
 
         return this._prisma.runs.findMany({
             where: {
-                user_id: id
+                run_category_id: id,
+                status: 'ACCEPTED'
+            },
+            orderBy: {
+                run_duration: 'asc'
             }
         })
     }
 
-    async createNewRunEntry(body: runCreateDTO): Promise<runs>{
+    // Run logic
+    getRunsByUser(id: string, authId: string): Promise<runs[]> {
+
+        if(id != authId) {
+            return this._prisma.runs.findMany({
+                where: {
+                    status: 'ACCEPTED'
+                }
+            })
+        } else {
+            return this._prisma.runs.findMany({
+                where: {
+                    user_id: id
+                }
+            })
+        }
+        
+    }
+
+    // getRunsDetails(id: string) {
+    //     return this._prisma.runs.findUnique({
+    //         where: {
+    //             run_id: id
+    //         }
+    //     })
+    // }
+
+    async createNewRunEntry(body: runCreateDTO, userId: string): Promise<{ message: string, data: runs }>{
 
         const doesExistCategory = await firstValueFrom(
             this.gameService.send(
@@ -53,9 +85,21 @@ export class RunsService {
             throw new Error('run category Id does not exist')
         }
 
-        return this._prisma.runs.create({
-            data: body as Prisma.runsCreateInput,
+        const createdRun = await this._prisma.runs.create({
+            data: {
+                // user_id verified using jwt
+                run_category_id: body.run_category_id,
+                vod_url: body.vod_url,
+                run_duration: body.run_duration,
+                status: 'PENDING',
+                user_id: userId
+            }
         })
+
+        return {
+            message: 'Successfully created a new run entry',
+            data: createdRun
+        }
     }
 
     // Run management logic
