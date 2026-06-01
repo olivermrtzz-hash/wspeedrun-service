@@ -13,9 +13,13 @@ export class RunsController {
     }
 
     // Run
+    @Get('runs/:id/category')
+    async getRunsByCategory(@Param('id') id: string) {
+        return await this._runsService.getRunsByCategory(id)
+    }
     @Post('/runs')
-    async createNewRunEntry(@Body() body: runCreateDTO) {
-        return await this._runsService.createNewRunEntry(body)
+    async createNewRunEntry(@Body() body: runCreateDTO, userId: string) {
+        return await this._runsService.createNewRunEntry(body, userId)
     }
     // Run Management
     @Get('runs/:status')
