@@ -34,6 +34,15 @@ export class RunsService {
             throw new NotFoundException('Category not found');
         }
 
+        const games = await firstValueFrom(
+            this.gameService.send(
+                'retrieve-games',
+                id
+            )
+        );
+
+        // type runDetails = users & games
+
         return this._prisma.runs.findMany({
             where: {
                 run_category_id: id,

@@ -60,4 +60,13 @@ export class GamesService {
 
         return !!categoryId;
     }
+
+    @MessagePattern('retrieve-games')
+    async sendGame(id: string) {
+        return await this._prisma.games.findUnique({
+            where: {
+                run_category_id: id
+            }
+        })
+    }
 }
