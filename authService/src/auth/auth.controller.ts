@@ -1,25 +1,29 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guard/auth.guard';
-import { UseGuards, Get } from '@nestjs/common';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
-@Controller('auth')
+@Controller() 
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('register')
-  register(@Body() body: any) {
+  
+  @Post('auth/register')
+  register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 
-  @Post('login')
-  login(@Body() body: any) {
-  return this.authService.login(body);
+ 
+  @Post('auth/login')
+  login(@Body() body: LoginDto) {
+    return this.authService.login(body);
   }
 
+  
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile() {
-  return 'You are authenticated';
+  @Get('users/:id/profile')
+  getProfile(@Param('id') id: string) {
+    return this.authService.getProfile(id);
   }
 }
