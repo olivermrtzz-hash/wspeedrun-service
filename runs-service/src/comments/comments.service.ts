@@ -1,56 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { commentCreateDTO } from './dtos/commentCreateDTO/commentCreateDTO';
-import { comments, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CommentsService {
 
-    private _prisma: PrismaService;
+    constructor(private readonly _prisma: PrismaService) {}
 
-    constructor(prisma: PrismaService) {
-        this._prisma = prisma
-    }
+    async createNewComment(body: commentCreateDTO, authenticatedUserId: string) {
+        const runExists = await this._prisma.comments.findFirst({
+            where: { run_id: body.run_id }
+        });
+        // Optional: validate run exists via fetch to runs or just trust the FK
 
-    async createNewComment(body: commentCreateDTO, authenticatedUser: any): Promise<{ message: string; data: comments }> {
-
-        const runId = await body.run_id
-        const userId = await body.user_id
-
-        if(!runId || !userId) {
-            throw new Error('run ID or user ID cannot be empty')
+        if (body.user_id !== authenticatedUserId) {
+            throw new UnauthorizedException('User ID does not match authenticated user');
         }
 
-        if(userId !== authenticatedUser.id) {
-            throw new Error('User ID does not match authenticated user')
+        if (!body.run_id || !body.user_id || !body.comment) {
+            throw new Error('run_id, user_id, and comment cannot be empty');
         }
 
-        const createdComment = await this._prisma.comments.create({
-            data: body as Prisma.commentsCreateInput
-        })
-
-        return {
-            message: 'Comment created successfully',
-            data: createdComment
-        }
-    }
-
-    deleteComment(id: string, authenticatedUser: any): Promise<comments> {
-
-        const comment = this._prisma.comments.findUnique({
-            where: {
-                comment_id: id
+        return this._prisma.comments.create({
+            data: {
+                comment_id: crypto.randomUUID(),
+                run_id: body.run_id,
+                user_id: body.user_id,
+                comment: body.comment,
+                created_at: new Date(),
             }
-        })
+        });
+    }
 
-        if(comment != authenticatedUser.comment_id) {
-            throw new Error('Not the correct comment owner')
+    async deleteComment(id: string, authenticatedUser: { userId: string }) {
+        const comment = await this._prisma.comments.findUnique({
+            where: { comment_id: id }
+        });
+
+        if (!comment) {
+            throw new NotFoundException('Comment not found');
+        }
+
+        if (comment.user_id !== authenticatedUser.userId) {
+            throw new UnauthorizedException('You can only delete your own comments');
         }
 
         return this._prisma.comments.delete({
-            where: {
-                comment_id: id
-            }
-        })
+            where: { comment_id: id }
+        });
     }
 }

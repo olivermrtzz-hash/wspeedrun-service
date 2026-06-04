@@ -8,6 +8,6 @@ export class AdminGuard implements CanActivate {
 
     const user = request.user;
 
-    return user.role === 'admin';
+    return user?.role === 'ADMIN';
   }
 }
