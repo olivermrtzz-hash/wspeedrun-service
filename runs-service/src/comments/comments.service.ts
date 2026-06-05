@@ -11,7 +11,6 @@ export class CommentsService {
         const runExists = await this._prisma.comments.findFirst({
             where: { run_id: body.run_id }
         });
-        // Optional: validate run exists via fetch to runs or just trust the FK
 
         if (body.user_id !== authenticatedUserId) {
             throw new UnauthorizedException('User ID does not match authenticated user');

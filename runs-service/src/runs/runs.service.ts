@@ -8,8 +8,6 @@ export class RunsService {
 
     constructor(private readonly _prisma: PrismaService) {}
 
-    // ── Run logic ─────────────────────────────────────────────────
-
     async getRunsByCategory(id: string) {
         const res = await fetch(`http://localhost:3001/categories/${id}`);
 
@@ -81,8 +79,6 @@ export class RunsService {
             data: createdRun
         };
     }
-
-    // ── Run management logic ──────────────────────────────────────
 
     getRunsByStatus(status: string): Promise<runs[]> {
         return this._prisma.runs.findMany({

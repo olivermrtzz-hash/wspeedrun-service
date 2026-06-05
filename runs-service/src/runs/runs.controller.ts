@@ -5,7 +5,6 @@ import { UserGuard } from 'src/auth/user/user.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { runCreateDTO } from './dtos/runCreateDTO';
 
-// ── Public + User routes ──────────────────────────────────────────
 @Controller('runs')
 export class RunsController {
     constructor(private readonly _runsService: RunsService) {}
@@ -33,7 +32,6 @@ export class RunsController {
     }
 }
 
-// ── Admin-only routes ─────────────────────────────────────────────
 @Controller('admin/runs')
 export class AdminRunsController {
     constructor(private readonly _runsService: RunsService) {}
