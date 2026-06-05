@@ -8,6 +8,6 @@ export class UserGuard implements CanActivate {
 
     const user = request.user;
 
-    return user.role === 'user';
+    return user?.role === 'USER';
   }
 }
