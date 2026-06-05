@@ -67,6 +67,6 @@ export class GamesService {
             where: {
                 run_category_id: id
             }
-        })
+        });
     }
 }
