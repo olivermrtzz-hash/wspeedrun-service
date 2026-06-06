@@ -9,21 +9,26 @@ export class RunsService {
     constructor(private readonly _prisma: PrismaService) {}
 
     async getRunsByCategory(id: string) {
-        const res = await fetch(`http://localhost:3001/categories/${id}`);
+        try {
+            const res = await fetch(`http://localhost:3001/categories/${id}`);
 
-        if (!res.ok) {
-            throw new NotFoundException('Category not found');
-        }
-
-        return this._prisma.runs.findMany({
-            where: {
-                run_category_id: id,
-                status: 'ACCEPTED'
-            },
-            orderBy: {
-                run_duration: 'asc'
+            if (!res.ok) {
+                throw new NotFoundException('Category not found');
             }
-        });
+
+            return this._prisma.runs.findMany({
+                where: {
+                    run_category_id: id,
+                    status: 'ACCEPTED'
+                },
+                orderBy: {
+                    run_duration: 'asc'
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            throw err
+        }
     }
 
     async getRunsByUser(id: string, authId: string): Promise<runs[]> {
