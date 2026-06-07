@@ -23,9 +23,7 @@ let GamesService = class GamesService {
     getGameById(id) {
         return this._prisma.games.findUnique({
             where: { game_id: id },
-            include: {
-                run_categories: true,
-            }
+            include: { run_categories: true }
         });
     }
     createGame(game) {

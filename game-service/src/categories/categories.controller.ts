@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@n
 import { CategoriesService } from './categories.service';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { categoryCreateDTO } from './dtos/categoryCreateDTO';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/roles/jwt.auth.guard';
 
 @Controller()
 export class CategoriesController {

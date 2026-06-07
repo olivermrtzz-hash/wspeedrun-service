@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const categories_service_1 = require("./categories.service");
 const roles_guard_1 = require("../auth/roles/roles.guard");
 const categoryCreateDTO_1 = require("./dtos/categoryCreateDTO");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const jwt_auth_guard_1 = require("../auth/roles/jwt.auth.guard");
 let CategoriesController = class CategoriesController {
     _categoriesService;
     constructor(categoriesService) {

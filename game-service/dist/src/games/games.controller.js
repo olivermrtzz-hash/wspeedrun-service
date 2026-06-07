@@ -16,9 +16,8 @@ exports.GamesController = void 0;
 const common_1 = require("@nestjs/common");
 const games_service_1 = require("./games.service");
 const gameCreateDTO_1 = require("./dtos/gameCreateDTO");
-const common_2 = require("@nestjs/common");
 const roles_guard_1 = require("../auth/roles/roles.guard");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const jwt_auth_guard_1 = require("../auth/roles/jwt.auth.guard");
 let GamesController = class GamesController {
     _gameService;
     constructor(gameService) {
@@ -55,7 +54,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "getGameById", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, common_1.Post)('admin/games'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -63,7 +62,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "createGame", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, common_1.Patch)('admin/games/:id/update'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -72,7 +71,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GamesController.prototype, "updateGame", null);
 __decorate([
-    (0, common_2.UseGuards)(roles_guard_1.RolesGuard, jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, common_1.Delete)('admin/games/:id/delete'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
